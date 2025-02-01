@@ -53,7 +53,7 @@ console.log(localStorage.getItem('token'))
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={submit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm/6 font-medium text-gray-100">
+              <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                 Email address
               </label>
               <div className="mt-2">
@@ -71,7 +71,7 @@ console.log(localStorage.getItem('token'))
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm/6 font-medium text-gray-100">
+                <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
                   Password
                 </label>
                 <div className="text-sm">
