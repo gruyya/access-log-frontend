@@ -1,8 +1,9 @@
 "use client";
 
 import { useAuth } from "@/contexts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
+import { redirect } from "next/navigation";
 
 const login = async (email: string, password: string) => {
   const response = await fetch("http://127.0.0.1:8000/api/login", {
@@ -20,7 +21,13 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { signIn } = useAuth();
+  const { token, signIn } = useAuth();
+
+  useEffect(() => {
+    if (token) {
+      redirect("/access-log");
+    }
+  }, [token]);
 
   const submit = async (e: any) => {
     e.preventDefault();
@@ -31,6 +38,7 @@ export default function Login() {
     }
 
     login(email, password).then((response) => {
+      console.log("response", response);
       if (!response.data.token) {
         setErrorMessage("Pogresan email ili lozinka.");
       }

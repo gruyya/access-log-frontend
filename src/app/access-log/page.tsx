@@ -91,19 +91,19 @@ export default function AccessLog() {
       <main className="flex flex-col min-w-[620px] mt-12  items-center">
         <div
           key={employee?.name}
-          className="flex gap-20 sm:flex-row bg-gray-100 p-8 rounded-md shadow-md h-96"
+          className="flex gap-20 sm:flex-row bg-gray-100 p-6 rounded-md shadow-md h-90"
         >
           {employee?.image ? (
             <img
-              alt=""
+              alt="Picture of the employee"
               src={employee?.image}
-              className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover bg-gray-500  h-64"
+              className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover bg-gray-500  h-64 self-center"
             />
           ) : (
             <div className="animate-pulse w-52 flex-none rounded-2xl object-cover bg-gray-300 h-64"></div>
           )}
           {employee ? (
-            <div className="max-w-xl flex-auto mt-5">
+            <div className="max-w-xl flex-auto mt-8">
               <h3 className="text-lg/7 font-semibold tracking-tight text-gray-900">
                 {employee?.name ?? "Name"}
               </h3>
@@ -132,13 +132,13 @@ export default function AccessLog() {
             </div>
           )}
         </div>
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 w-full">
-          <div className="">
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-22 w-full mt-12">
+          <div className="w-[70%] self-center">
             <form className="space-y-6 w-full shadow-sm">
               <div>
                 <label
                   htmlFor="barcode"
-                  className="block text-lg/6 font-medium text-gray-900"
+                  className="block text-lg/6 text-gray-900 font-semibold text-center"
                 >
                   Barcode
                 </label>
