@@ -5,6 +5,7 @@ import useHandleLogout from "@/hooks/useHandleLogout";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
+import { useSymbologyScanner } from "@use-symbology-scanner/react";
 
 const logEmployee = async (barcode: string, token: string) => {
   const response = await fetch(
@@ -48,6 +49,13 @@ export default function AccessLog() {
   const { token } = useAuth();
   const { onLogout } = useHandleLogout();
 
+  const handleSymbol = (symbol, matchedSymbologies) => {
+    console.log(`Scanned ${symbol}`);
+    checkBarcode(symbol);
+  };
+
+  useSymbologyScanner(handleSymbol);
+
   useEffect(() => {
     if (!token) {
       redirect("/");
@@ -87,7 +95,7 @@ export default function AccessLog() {
       submit(barcode);
     }
   };
-  console.log("barcode" + barcode);
+
   return (
     <div className="flex flex-col px-24 py-12">
       <button
@@ -175,35 +183,6 @@ export default function AccessLog() {
               </div>
             </div>
           )}
-        </div>
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-22 w-[350px] mt-24">
-          <div className="self-center">
-            <form className="space-y-6 w-full shadow-sm">
-              <div>
-                <label
-                  htmlFor="barcode"
-                  className="block text-lg/6 text-gray-900 font-semibold text-center"
-                >
-                  Barcode
-                </label>
-                <div className="mt-4">
-                  <input
-                    value={barcode}
-                    onChange={(e) => {
-                      checkBarcode(e.target.value);
-                    }}
-                    id="barcode"
-                    name="barcode"
-                    type="text"
-                    required
-                    autoFocus
-                    autoComplete="off"
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  />
-                </div>
-              </div>
-            </form>
-          </div>
         </div>
       </main>
       {!!errorMessage && (
