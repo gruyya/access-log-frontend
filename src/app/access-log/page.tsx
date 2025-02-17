@@ -28,14 +28,21 @@ const logEmployee = async (barcode: string, token: string) => {
   }
 };
 
+enum BarcodeType {
+  IN = "in",
+  OUT = "out",
+}
+
 type EmployeeResource = {
   name: string;
   image: string;
   rank: string;
   unit: string;
+  barcode_type: BarcodeType;
 };
 
 export default function AccessLog() {
+  const [barcode, setBarcode] = useState("");
   const [employee, setEmployee] = useState<EmployeeResource | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const { token } = useAuth();
@@ -61,11 +68,11 @@ export default function AccessLog() {
     }
 
     try {
-      console.log("arcode", barcode);
       logEmployee(barcode, token).then((response) => {
         if (response.data) {
           setEmployee(response.data as EmployeeResource);
         }
+        setBarcode("");
       });
     } catch (e) {
       console.log(e);
@@ -73,25 +80,45 @@ export default function AccessLog() {
   };
 
   const checkBarcode = (barcode: string) => {
-    setEmployee(null);
+    setBarcode(barcode);
 
-    if (barcode.length >= 7) {
+    if (barcode.length >= 4) {
+      setEmployee(null);
       submit(barcode);
     }
   };
-
+  console.log("barcode" + barcode);
   return (
     <div className="flex flex-col px-24 py-12">
       <button
         onClick={onLogout}
-        className="bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-20"
+        className="bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-32"
       >
-        Logout
+        Odjavi se
       </button>
-      <main className="flex flex-col min-w-[620px] mt-12  items-center">
+      <main className="flex flex-col min-w-[820px] mt-36 items-center">
+        {employee ? (
+          <div className="flex sm:flex-row bg-gray-100 p-6 rounded-md shadow-md min-w-[820px] mb-16 items-center">
+            <div className="text-8xl font-semibold text-gray-600">
+              {employee?.barcode_type === BarcodeType.IN ? "ULAZ" : "IZLAZ"}
+            </div>
+            <div className="text-3xl text-gray-600 ml-auto flex flex-col items-left">
+              <div className="font-semibold">
+                {" "}
+                Datum: {new Date().toLocaleDateString()}
+              </div>
+              <div className="font-semibold">
+                {" "}
+                Vreme: {new Date().toLocaleTimeString()}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="animate-pulse min-w-[820px] flex-none rounded-md bg-gray-300 mb-16  h-[144px]"></div>
+        )}
         <div
           key={employee?.name}
-          className="flex gap-20 sm:flex-row bg-gray-100 p-6 rounded-md shadow-md h-90"
+          className="flex gap-20 sm:flex-row bg-gray-100 p-6 rounded-md shadow-md h-134 min-w-[820px]"
         >
           {employee?.image ? (
             <img
@@ -104,15 +131,32 @@ export default function AccessLog() {
           )}
           {employee ? (
             <div className="max-w-xl flex-auto mt-8">
-              <h3 className="text-lg/7 font-semibold tracking-tight text-gray-900">
-                {employee?.name ?? "Name"}
-              </h3>
-              <p className="text-md/6 font-semibold text-indigo-600">
-                {employee?.rank ?? "rank"}
-              </p>
-              <p className="mt-4 text-base/7 text-gray-600">
-                {employee?.unit ?? "unit"}
-              </p>
+              <div className="flex flex-row items-center gap-4">
+                <p className="text-4xl font-semibold text-gray-600">
+                  {" "}
+                  Ime i prezime:
+                </p>
+                <h3 className="text-4xl font-semibold tracking-tight text-gray-700">
+                  {employee?.name ?? "Name"}
+                </h3>
+              </div>
+
+              <div className="flex flex-row items-center gap-4 mt-2">
+                <p className="text-4xl font-semibold text-gray-600"> Čin:</p>
+                <p className="text-4xl font-semibold text-green-800">
+                  {employee?.rank ?? "rank"}
+                </p>
+              </div>
+
+              <div className="flex flex-row items-center gap-4 self-bottom mt-12">
+                <p className="text-4xl font-semibold text-gray-600">
+                  {" "}
+                  Jedinica:
+                </p>
+                <p className="text-4xl font-semibold text-green-800">
+                  {employee?.unit ?? "unit"}
+                </p>
+              </div>
             </div>
           ) : (
             <div className="mx-auto w-full max-w-sm rounded-md p-4">
@@ -132,8 +176,8 @@ export default function AccessLog() {
             </div>
           )}
         </div>
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-22 w-full mt-12">
-          <div className="w-[70%] self-center">
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-22 w-[350px] mt-24">
+          <div className="self-center">
             <form className="space-y-6 w-full shadow-sm">
               <div>
                 <label
@@ -144,15 +188,16 @@ export default function AccessLog() {
                 </label>
                 <div className="mt-4">
                   <input
+                    value={barcode}
                     onChange={(e) => {
                       checkBarcode(e.target.value);
                     }}
                     id="barcode"
                     name="barcode"
-                    type="barcode"
+                    type="text"
                     required
                     autoFocus
-                    autoComplete="barcode"
+                    autoComplete="off"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                 </div>

@@ -53,6 +53,15 @@ export default function Login() {
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start min-w-96">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 w-full">
+          <img
+            src="http://127.0.0.1:8000/images/grb-republike-srbije.png"
+            alt="Grb Republike Srbije"
+            className="w-44 mx-auto"
+          />
+          <hr className="w-1/2 mx-auto border-gray-300" />
+          <h1 className="text-3xl font-bold text-center text-gray-900">
+            IS Pristup
+          </h1>
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <form onSubmit={submit} className="space-y-6">
               <div>
@@ -60,7 +69,7 @@ export default function Login() {
                   htmlFor="email"
                   className="block text-sm/6 font-medium text-gray-900"
                 >
-                  Email address
+                  Email adresa
                 </label>
                 <div className="mt-2">
                   <input
@@ -81,7 +90,7 @@ export default function Login() {
                     htmlFor="password"
                     className="block text-sm/6 font-medium text-gray-900"
                   >
-                    Password
+                    Lozinka
                   </label>
                 </div>
                 <div className="mt-2">
@@ -100,9 +109,9 @@ export default function Login() {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="flex w-full justify-center rounded-md bg-blue-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
-                  Sign in
+                  Uloguj se
                 </button>
               </div>
             </form>
