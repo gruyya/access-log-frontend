@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kontrola Pristupa Objektu - Frontend
 
-## Getting Started
+Ovo je frontend deo aplikacije za kontrolu pristupa objektima, izgrađen u **Next.js**, koji komunicira sa backend API-jem razvijenim u Laravelu.
 
-First, run the development server:
+## Tehnologije
+- **Frontend:** Next.js (React)
+- **UI Biblioteka:** Tailwind CSS
+- **Autentifikacija:** Laravel Sanctum (API-based auth)
+- **API komunikacija:** Axios / Fetch API
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Instalacija
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Klonirajte repozitorijum:
+   ```bash
+   git clone https://github.com/gruyya/access-log-frontend.git
+   cd access-log-fronted
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Instalirajte zavisnosti:
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Konfigurišite **.env.local** fajl:
+   ```plaintext
+   NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
+   ```
 
-## Learn More
+4. Pokrenite razvojni server:
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+## Funkcionalnosti
+- Skeniranje bar koda i slanje podataka ka API-u
+- Prikaz informacija o licima koja trenutno pristupaju objektu
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Endpointi koje koristi frontend
+- `POST /api/employee-access-log` – Registracija dolaska zaposlenog
+- `POST /api/login` – Login administratora
 
-## Deploy on Vercel
+## Autor
+[Nenad Grujic](https://github.com/gruyya)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Licenca
+MIT License
