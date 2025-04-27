@@ -4,6 +4,8 @@ import { useAuth } from "@/contexts";
 import { useEffect, useState } from "react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { redirect } from "next/navigation";
+import useRecaptcha from "@/hooks/useRecaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const login = async (email: string, password: string) => {
   const response = await fetch("http://127.0.0.1:8000/api/login", {
@@ -21,7 +23,11 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [reCaptchaToken, setReCaptchaToken] = useState<string | null>(null);
   const { token, signIn } = useAuth();
+  const { capchaToken, recaptchaRef, handleRecaptcha } = useRecaptcha();
+
+  const reCaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
   useEffect(() => {
     if (token) {
@@ -31,6 +37,11 @@ export default function Login() {
 
   const submit = async (e: any) => {
     e.preventDefault();
+
+    if (!reCaptchaToken) {
+      alert("Molimo vas da potvrdite da niste robot");
+      return;
+    }
 
     if (!email || !password) {
       setErrorMessage("Proverite da li ste popunili email i lozinka polja");
@@ -104,12 +115,23 @@ export default function Login() {
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                 </div>
+                <div className="mt-4 flex items-center w-full">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={reCaptchaSiteKey}
+                    onChange={(token) => {
+                      setReCaptchaToken(token);
+                      handleRecaptcha(token);
+                    }}
+                  />
+                </div>
               </div>
 
               <div>
                 <button
+                  disabled={!capchaToken}
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-blue-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                  className="flex w-full justify-center rounded-md bg-blue-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
                   Uloguj se
                 </button>
