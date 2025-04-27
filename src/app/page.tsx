@@ -7,13 +7,21 @@ import { redirect } from "next/navigation";
 import useRecaptcha from "@/hooks/useRecaptcha";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const login = async (email: string, password: string) => {
+const login = async (
+  email: string,
+  password: string,
+  reCaptchaToken: string
+) => {
   const response = await fetch("http://127.0.0.1:8000/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: email, password: password }),
+    body: JSON.stringify({
+      email: email,
+      password: password,
+      capcha_token: reCaptchaToken,
+    }),
   });
 
   return await response.json();
@@ -24,8 +32,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [reCaptchaToken, setReCaptchaToken] = useState<string | null>(null);
-  const { token, signIn } = useAuth();
   const { capchaToken, recaptchaRef, handleRecaptcha } = useRecaptcha();
+  const { token, signIn } = useAuth();
 
   const reCaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
@@ -48,8 +56,7 @@ export default function Login() {
       return;
     }
 
-    login(email, password).then((response) => {
-      console.log("response", response);
+    login(email, password, reCaptchaToken).then((response) => {
       if (!response.data.token) {
         setErrorMessage("Pogresan email ili lozinka.");
       }

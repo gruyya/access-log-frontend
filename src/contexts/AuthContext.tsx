@@ -40,7 +40,6 @@ export function AuthProvider(props: PropsWithChildren) {
     <AuthContext.Provider
       value={{
         signIn: async (session: TokenResource) => {
-          console.log("session", session);
           setSession(session);
 
           redirect("/access-log");

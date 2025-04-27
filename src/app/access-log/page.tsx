@@ -74,9 +74,7 @@ export default function AccessLog() {
         }
         setBarcode("");
       });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const checkBarcode = (barcode: string) => {
@@ -87,7 +85,7 @@ export default function AccessLog() {
       submit(barcode);
     }
   };
-  console.log("barcode" + barcode);
+
   return (
     <div className="flex flex-col px-24 py-12">
       <button
